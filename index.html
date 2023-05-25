@@ -10,58 +10,48 @@
     <script
       type="text/javascript"
       src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=srf6a4jsgy"></script>
+    <style>
+      .info {
+        position: fixed;
+        z-index: 1;
+      }
+      .my-box {
+        background: white;
+        border: 1px solid;
+        padding: 15px;
+      }
+    </style>
   </head>
   <body>
-    <div id="map" style="width: 100%; height: 800px"></div>
-
-    <script>
-      let jsondata = {}
-
-      let busPosition = {
-        '서울71나1010': null,
-        '71저1221': null,
-        '71저1210': null,
-        '1701': null,
-        '70라8517': null,
-      }
-
-      var mapOptions = {
-        center: new naver.maps.LatLng(37.6293065, 127.086812),
-        zoom: 14,
-      }
-
-      var map = new naver.maps.Map('map', mapOptions)
-
-      async function getRequest() {
-        const getResponse = await fetch('http://localhost/api', {method: 'get'})
-        const getJson = await getResponse.json()
-        return getJson
-      }
-
-      getRequest().then(function (data) {
-        jsondata = data
-      })
-
-      setInterval(function () {
-        getRequest().then(function (data) {
-          jsondata = data
-          for (datas in data['data']) {
-            var position = new naver.maps.LatLng(
-              data['data'][datas]['lat'],
-              data['data'][datas]['lon'],
-            )
-            var markerOptions = {
-              position: position,
-              map: map,
-            }
-            var marker = new naver.maps.Marker(markerOptions)
-            var busMarker = busPosition[data['data'][datas]['name']]
-            if (busMarker != null) busMarker.setMap(null)
-            busMarker = marker
-          }
-          console.log(jsondata)
-        })
-      }, 2000)
-    </script>
+    <div class="container">
+      <div class="info">
+        <div class="my-box">
+          <div style="display: flex; align-items: center">
+            <img src="http://localhost/icon/정류장.png" width="24" height="24" alt="" />
+            <span style="font-weight: bold">정류장</span>
+          </div>
+          <div style="display: flex; align-items: center">
+            <img src="http://localhost/icon/삼육대.png" width="24" height="24" alt="" />
+            <span style="font-weight: bold">삼육대 방면</span>
+          </div>
+          <div style="display: flex; align-items: center">
+            <img src="http://localhost/icon/화랑대.png" width="24" height="24" alt="" />
+            <span style="font-weight: bold">화랑대 방면</span>
+          </div>
+          <div style="display: flex; align-items: center">
+            <img src="http://localhost/icon/석계.png" width="24" height="24" alt="" />
+            <span style="font-weight: bold">석계 방면</span>
+          </div>
+          <div style="display: flex; align-items: center">
+            <img src="http://localhost/icon/별내.png" width="24" height="24" alt="" />
+            <span style="font-weight: bold">별내 </span>
+          </div>
+        </div>
+      </div>
+      <div id="map" style="width: 100%; height: 900px"></div>
+    </div>
+    <script type="text/javascript" src="/js/busStatus.js"></script>
+    <script type="text/javascript" src="/js/busUpdate.js"></script>
+    <script type="text/javascript" src="/js/busStop.js"></script>
   </body>
 </html>
