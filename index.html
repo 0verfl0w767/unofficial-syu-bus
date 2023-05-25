@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>SYU BUS</title>
+    <script
+      type="text/javascript"
+      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=srf6a4jsgy"></script>
+  </head>
+  <body>
+    <div id="map" style="width: 100%; height: 800px"></div>
+
+    <script>
+      let jsondata = {}
+
+      let busPosition = {
+        '서울71나1010': null,
+        '71저1221': null,
+        '71저1210': null,
+        '1701': null,
+        '70라8517': null,
+      }
+
+      var mapOptions = {
+        center: new naver.maps.LatLng(37.6293065, 127.086812),
+        zoom: 14,
+      }
+
+      var map = new naver.maps.Map('map', mapOptions)
+
+      async function getRequest() {
+        const getResponse = await fetch('http://localhost/api', {method: 'get'})
+        const getJson = await getResponse.json()
+        return getJson
+      }
+
+      getRequest().then(function (data) {
+        jsondata = data
+      })
+
+      setInterval(function () {
+        getRequest().then(function (data) {
+          jsondata = data
+          for (datas in data['data']) {
+            var position = new naver.maps.LatLng(
+              data['data'][datas]['lat'],
+              data['data'][datas]['lon'],
+            )
+            var markerOptions = {
+              position: position,
+              map: map,
+            }
+            var marker = new naver.maps.Marker(markerOptions)
+            var busMarker = busPosition[data['data'][datas]['name']]
+            if (busMarker != null) busMarker.setMap(null)
+            busMarker = marker
+          }
+          console.log(jsondata)
+        })
+      }, 2000)
+    </script>
+  </body>
+</html>
