@@ -19,38 +19,75 @@ var map = new naver.maps.Map('map', mapOptions)
 setInterval(function () {
   getRequest().then(function (data) {
     jsondata = data
+    let html = ''
     for (let datas in data['data']) {
       var position = new naver.maps.LatLng(data['data'][datas]['lat'], data['data'][datas]['lon'])
       var markerOptions = {
         position: position,
         map: map,
         icon: {
-          content: setBusIcon(data['data'][datas]),
+          content: setBusIcon(data['data'][datas], 56),
           anchor: new naver.maps.Point(28, 52), // zoom base 14
         },
       }
       var marker = new naver.maps.Marker(markerOptions)
-      var busMarker = busPosition[data['data'][datas]['name']]
-      if (busMarker != null) busMarker.setMap(null)
-      busMarker = marker
+      if (busPosition[data['data'][datas]['name']] != null)
+        busPosition[data['data'][datas]['name']].setMap(null)
+      busPosition[data['data'][datas]['name']] = marker
+      html += '<div style="display: flex; align-items: center">'
+      html += setBusIcon(data['data'][datas], 24)
+      html += setBusName(data['data'][datas]) + ' 방면'
+      html += '</div>'
     }
+    if (html == '') html = '운행 정보 없음'
+    document.getElementById('busStatus').innerHTML = html
     console.log(jsondata)
   })
 }, 2000)
 
-function setBusIcon(datas) {
+function setBusIcon(datas, size) {
   let routeid = datas['routeid']
   let status = datas['status']
 
   if (status == 2)
-    return '<img src="http://localhost/icon/삼육대.png" width="56" height="56" alt="">'
+    return (
+      '<img src="http://localhost/icon/삼육대.png" width="' +
+      size +
+      '" height="' +
+      size +
+      '" alt="">'
+    )
   else if (routeid == 1)
-    return '<img src="http://localhost/icon/화랑대.png" width="56" height="56" alt="">'
+    return (
+      '<img src="http://localhost/icon/화랑대.png" width="' +
+      size +
+      '" height="' +
+      size +
+      '" alt="">'
+    )
   else if (routeid == 2)
-    return '<img src="http://localhost/icon/석계.png" width="56" height="56" alt="">'
+    return (
+      '<img src="http://localhost/icon/석계.png" width="' + size + '" height="' + size + '" alt="">'
+    )
   else if (routeid == 3)
-    return '<img src="http://localhost/icon/별내.png" width="56" height="56" alt="">'
+    return (
+      '<img src="http://localhost/icon/별내.png" width="' + size + '" height="' + size + '" alt="">'
+    )
   else if (routeid == 4)
-    return '<img src="http://localhost/icon/구리.png" width="56" height="56" alt="">'
+    return (
+      '<img src="http://localhost/icon/구리.png" width="' + size + '" height="' + size + '" alt="">'
+    )
+  else return '알 수 없음'
+}
+
+function setBusName(datas) {
+  let routeid = datas['routeid']
+  let status = datas['status']
+
+  if (status == 2) return '삼육대'
+  else if (routeid == 1) return '화랑대'
+  else if (routeid == 2) return '석계'
+  else if (routeid == 3) return '별내'
+  else if (routeid == 4) return '구리'
   else return '알 수 없음'
 }
