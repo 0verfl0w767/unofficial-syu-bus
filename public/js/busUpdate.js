@@ -50,33 +50,15 @@ function setBusIcon(datas, size) {
   let status = datas['status']
 
   if (status == 2)
-    return (
-      '<img src="http://localhost/icon/삼육대.png" width="' +
-      size +
-      '" height="' +
-      size +
-      '" alt="">'
-    )
+    return '<img src="/icon/삼육대.png" width="' + size + '" height="' + size + '" alt="">'
   else if (routeid == 1)
-    return (
-      '<img src="http://localhost/icon/화랑대.png" width="' +
-      size +
-      '" height="' +
-      size +
-      '" alt="">'
-    )
+    return '<img src="/icon/화랑대.png" width="' + size + '" height="' + size + '" alt="">'
   else if (routeid == 2)
-    return (
-      '<img src="http://localhost/icon/석계.png" width="' + size + '" height="' + size + '" alt="">'
-    )
+    return '<img src="/icon/석계.png" width="' + size + '" height="' + size + '" alt="">'
   else if (routeid == 3)
-    return (
-      '<img src="http://localhost/icon/별내.png" width="' + size + '" height="' + size + '" alt="">'
-    )
+    return '<img src="/icon/별내.png" width="' + size + '" height="' + size + '" alt="">'
   else if (routeid == 4)
-    return (
-      '<img src="http://localhost/icon/구리.png" width="' + size + '" height="' + size + '" alt="">'
-    )
+    return '<img src="/icon/구리.png" width="' + size + '" height="' + size + '" alt="">'
   else return '알 수 없음'
 }
 

@@ -45,7 +45,7 @@ let busStop = {
 }
 
 const busIcon = `
-  <img src="http://localhost/icon/정류장.png" width="56" height="56" alt="">
+  <img src="/icon/정류장.png" width="56" height="56" alt="">
 `
 for (let index in busStop) {
   var position = new naver.maps.LatLng(busStop[index]['lat'], busStop[index]['lon'])
